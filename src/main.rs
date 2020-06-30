@@ -1,4 +1,5 @@
 mod pages;
+mod ctl;
 
 use actix_web::{HttpServer, App};
 use pages::*;
