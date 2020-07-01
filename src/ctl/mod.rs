@@ -1,1 +1,2 @@
-pub (crate) mod response;
+pub mod response;
+pub mod auth;

@@ -1,14 +1,24 @@
-use actix_web::{get, Responder};
-use crate::ctl::response::json_response;
+use crate::ctl::response::ApiResponse;
+use crate::libs::uuid::get_request_id;
+use actix_web::{get, HttpRequest, Responder};
 use serde::Serialize;
 
 #[derive(Serialize)]
-struct HelloResponse{
+struct HelloResponse {
     uname: String,
     stat: bool,
 }
 
-#[get("/hello")]
-pub(crate) async fn index() -> impl Responder {
-    json_response(None::<HelloResponse>, None)
+#[get("/")]
+pub(crate) async fn index(req: HttpRequest) -> impl Responder {
+    let mut r = ApiResponse::new();
+    r.set_data(HelloResponse {
+        uname: String::from("🌜"),
+        stat: true,
+    })
+    .set_error(10010, "lfsdlfsdl")
+    .set_request_id(get_request_id(req))
+    ;
+
+    r.json()
 }
