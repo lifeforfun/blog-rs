@@ -4,7 +4,7 @@ mod ctl;
 mod libs;
 mod pages;
 
-use actix_web::{App, HttpServer};
+use actix_web::{web, App, HttpServer};
 use pages::*;
 use actix_session::CookieSession;
 
@@ -20,8 +20,14 @@ async fn server() -> std::io::Result<()> {
                 CookieSession::signed(&[0;64])
                     .secure(false),
             )
-            .service(home::index::index)
-            .service(admin::index::index)
+            .service(
+                web::scope("")
+                    .service(home::index::index)
+            )
+            .service(
+                web::scope("/admin")
+                    .service(admin::index::index)
+            )
     )
         .bind("127.0.0.1:3000")?
         .run()
